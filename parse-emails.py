@@ -19,12 +19,19 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-#Settings up variables
+#This is to make sure your email isn't in the file permanently
+#Make a json file called email, and put your email in it like this:
+'''
+}
+    'emails':'you@wherevere.com'
+}
+'''
 email_fp = "email.json"
 with open(email_fp) as ef:
     email=json.loads(ef.read())
 
 # Request all access (permission to read/send/receive emails, manage the inbox, and more)
+# Give you full access to your email
 SCOPES = ["https://mail.google.com/"]
 our_email = email["emails"]
 
@@ -47,35 +54,7 @@ if not creds or not creds.valid:
         token.write(creds.to_json())
 service = build("gmail", "v1", credentials=creds)
 
-'''
-def get_email_id(service):
-    global email_id
-    try:
-        results = service.users().messages().list(userId="me", maxResults=1).execute()
-        messages = results.get("messages", [])
-        if messages:
-            email_id = messages[0]["id"]
-
-    except HttpError as error:
-        print(f"An error occurred: {error}")
-        email_id = None
-
-    return email_id
-'''
-
-def get_size_format(b, factor=1024, suffix="B"):
-    """
-    Scale bytes to its proper byte format
-    e.g:
-        1253656 => '1.20MB'
-        1253656678 => '1.17GB'
-    """
-    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
-        if b < factor:
-            return f"{b:.2f}{unit}{suffix}"
-        b /= factor
-    return f"{b:.2f}Y{suffix}"
-
+#Search for specific emails you want to download
 def search_messages(service, query):
     result = service.users().messages().list(userId='me',q=query).execute()
     messages = [ ]
@@ -88,6 +67,8 @@ def search_messages(service, query):
             messages.extend(result['messages'])
     return messages
 
+# This will take the messages list (or array depending on your religion) and convert it to 'parts', which
+# is how this script (possible maildir as a whole) organizes data. Parts are what got me so frustrated.
 def read_message(service, message):
     """
     This function takes Gmail API `service` and the given `message_id` and does the following:
@@ -107,6 +88,7 @@ def read_message(service, message):
     info = []
     if headers:
         # this section prints email basic info & creates a folder for the email
+        # It also makes an array for the bad choices WMATA made with just sending really simple emails for service updates.
         for header in headers:
             name = header.get("name")
             value = header.get("value")
@@ -130,6 +112,8 @@ def read_message(service, message):
                 d = "Date: "+value
                 info.append(d)
         info=' '.join(info)
+    
+    # This needs to be moved to 'parse_parts', but for right now it works, and that's what matters.
     if parts == None:
         print("It's none")
         # if the email part is text plain
@@ -164,9 +148,11 @@ def parse_parts(service, parts, message, headers):
                 parse_parts(service, part.get("parts"), message)
             if mimeType == "text/plain":
                 # if the email part is text plain
+                # Incidentally, it also saves html files as plain text
                 filename = message['id'] + ".txt"
                 data = part["body"]["data"]
                 text_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
+                # Existing file check
                 if os.path.exists("./emails/" + filename) == True:
                     pass
                 elif os.path.exists("./emails/" + filename) == False:
@@ -191,78 +177,3 @@ print(f"Found {len(results)} results.")
 # for each email matched, read it (output plain/text to console & save HTML and attachments)
 for msg in results:
     read_message(service, msg)
-
-'''
-def read_message(service, message):
-    """
-    This function takes Gmail API `service` and the given `message_id` and does the following:
-        - Downloads the content of the email
-        - Prints email basic information (To, From, Subject & Date) and plain/text parts
-        - Creates a folder for each email based on the subject
-        - Downloads text/html content (if available) and saves it under the folder created as index.html
-        - Downloads any file that is attached to the email and saves it in the folder created
-    """
-    msg = service.users().messages().get(userId='me', id=message['id'], format='full').execute()
-    # parts can be the message body, or attachments
-    payload = msg['payload']
-    headers = payload.get("headers")
-    parts = payload.get("parts")
-    if headers:
-        # this section prints email basic info & creates a folder for the email
-        for header in headers:
-            name = header.get("name")
-            value = header.get("value")
-            if name.lower() == 'from':
-                # we print the From address
-                print("From:", value)
-            if name.lower() == "to":
-                # we print the To address
-                print("To:", value)
-            if name.lower() == "subject":
-                # make our boolean True, the email has "subject"
-                has_subject = True
-            if name.lower() == "date":
-                # we print the date when the message was sent
-                print("Date:", value)
-    parse_parts(service, parts, message)
-
-def parse_parts(service, parts, message):
-    """
-    Utility function that parses the content of an email partition
-    """
-    for part in parts:
-        if part["filename"]:
-            part_headers = part["headers"]
-            filename = message['id']+ "-" + part["filename"]
-            body = part["body"]
-            data = body["data"]
-            file_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
-            if os.path.exists("./emails/" + filename) == True:
-                pass
-            elif os.path.exists("./emails/" + filename) == False:
-                with open("./emails/" + filename, "wb") as f:
-                    f.write(file_data)
-
-        if part["mimeType"] == "text/plain":
-            part_headers = part["headers"]
-            filename = message['id'] + ".txt"
-            data = part["body"]["data"]
-            text_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
-            if os.path.exists("./emails/" + filename) == True:
-                pass
-            elif os.path.exists("./emails/" + filename) == False:
-                with open("./emails/" + filename, "w") as f:
-                    f.write(text_data.decode("utf-8"))
-
-        if part["mimeType"] == "text/html":
-            part_headers = part["headers"]
-            filename = message['id'] + ".html"
-            data = part["body"]["data"]
-            html_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
-            soup = BeautifulSoup(html_data, "html.parser")
-            if os.path.exists("./emails/" + filename) == True:
-                pass
-            elif os.path.exists("./emails/" + filename) == False:
-                with open("./emails/" + filename, "w") as f:
-                    f.write(soup.prettify())
-'''
