@@ -7,7 +7,7 @@ Dependencies and software:
 
 - I am using Python 3.10.6 to make this project.
 
-- The only dependencies are Google's PIP packages, which is in a helpful command in the quickstart. The rest of the libraries are built in. 
+- The only dependencies you need to download are Google's PIP packages, which is in a helpful command in the quickstart. The rest of the libraries are built in. 
 
 - In order to get your API project setup, look at ThePythonCode's guide.
 ### Note:
