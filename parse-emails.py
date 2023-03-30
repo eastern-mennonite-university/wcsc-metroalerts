@@ -67,8 +67,8 @@ def search_messages(service, query):
             messages.extend(result['messages'])
     return messages
 
-# This will take the messages list (or array depending on your religion) and convert it to 'parts', which
-# is how this script (possible maildir as a whole) organizes data. Parts are what got me so frustrated.
+# This will take the messages list (or array depending on your religion) and convert it to 'parts', 
+# which is how this script (possibly maildir as a whole) organizes data. Parts are what got me so frustrated.
 def read_message(service, message):
     """
     This function takes Gmail API `service` and the given `message_id` and does the following:
@@ -111,26 +111,13 @@ def read_message(service, message):
                 print("Date:", value)
                 d = "Date: "+value
                 info.append(d)
-        info=' '.join(info)
-    
-    # This needs to be moved to 'parse_parts', but for right now it works, and that's what matters.
-    if parts == None:
-        print("It's none")
-        # if the email part is text plain
-        filename = message['id'] + ".txt"
-        data = msg["snippet"]
-        print(data)
-        if os.path.exists("./emails/" + filename) == True:
-            pass
-        elif os.path.exists("./emails/" + filename) == False:
-            with open("./emails/" + filename, "w") as f:
-                f.write(info + data)
 
-    else:
-        parse_parts(service, parts, message, headers)
+    #This joins the array into one big string          
+    info=' '.join(info)
+    parse_parts(service, parts, message, msg, info)
     print("="*50)
 
-def parse_parts(service, parts, message, headers):
+def parse_parts(service, parts, message, msg, info):
     """
     Utility function that parses the content of an email partition
     """
@@ -170,6 +157,19 @@ def parse_parts(service, parts, message, headers):
                 elif os.path.exists("./emails/" + filename) == False:
                     with open("./emails/" + filename, "w") as f:
                         f.write(soup.prettify())
+    # This helps fix the bad choices WMATA made.
+    # For some reason, the smaller update emails have no 'parts', so going through a 'if parts:' was giving me everything else.
+    # As you can see, it checks to see if there are parts and then will grab my Jerry-rigged array strings and give you a nice .txt file.
+    elif parts == None:
+        filename = message['id'] + ".txt"
+        data = msg["snippet"]
+        #print(data)
+        if os.path.exists("./emails/" + filename) == True:
+            pass
+        elif os.path.exists("./emails/" + filename) == False:
+            with open("./emails/" + filename, "w") as f:
+                f.write(info + " " + data)
+
 
 # get emails that match the query you specify from the command lines
 results = search_messages(service, "MetroAlerts")
