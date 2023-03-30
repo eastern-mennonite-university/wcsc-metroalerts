@@ -1,5 +1,11 @@
 #API auth/key files
-./API-keys/key.json
+*.pickle
+
+#The email just in case
+email.json
+
+#VSCode Workspace files
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
