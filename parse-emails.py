@@ -35,10 +35,11 @@ with open(email_fp) as ef:
 SCOPES = ["https://mail.google.com/"]
 our_email = email["emails"]
 
-creds = None
 # The file token.json stores the user"s access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time
+# created automatically when the authorization flow completes for the first time.
+# ie: Name the json you downloaded from Google 'credentials.json' and the script
+# will make the 'token.json'
+creds = None
 if os.path.exists("./API_keys/token.json"):
     creds = Credentials.from_authorized_user_file("./API_keys/token.json", SCOPES)
 # If there are no (valid) credentials available, let the user log in.
