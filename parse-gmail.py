@@ -56,7 +56,7 @@ if not creds or not creds.valid:
 service = build("gmail", "v1", credentials=creds)
 
 #Search for specific emails you want to download
-def search_messages(service, query):
+def SearchMessages(service, query):
     result = service.users().messages().list(userId='me',q=query).execute()
     messages = [ ]
     if 'messages' in result:
@@ -70,7 +70,7 @@ def search_messages(service, query):
 
 # This will take the messages list (or array depending on your religion) and convert it to 'parts', 
 # which is how this script (possibly maildir as a whole) organizes data. Parts are what got me so frustrated.
-def read_message(service, message):
+def ReadMessage(service, message):
     """
     This function takes Gmail API `service` and the given `message_id` and does the following:
         - Downloads the content of the email
@@ -115,10 +115,10 @@ def read_message(service, message):
 
     #This joins the array into one big string          
     info=' '.join(info)
-    parse_parts(service, parts, message, msg, info)
+    ParseParts(service, parts, message, msg, info)
     print("="*50)
 
-def parse_parts(service, parts, message, msg, info):
+def ParseParts(service, parts, message, msg, info):
     """
     Utility function that parses the content of an email partition
     """
@@ -131,8 +131,7 @@ def parse_parts(service, parts, message, msg, info):
             file_size = body.get("size")
             part_headers = part.get("headers")
             if part.get("parts"):
-                # recursively call this function when we see that a part
-                # has parts inside
+                # recursively call this function when we see that a part has parts inside
                 parse_parts(service, part.get("parts"), message)
             if mimeType == "text/plain":
                 # if the email part is text plain
@@ -146,6 +145,7 @@ def parse_parts(service, parts, message, msg, info):
                 elif os.path.exists("./emails/" + filename) == False:
                     with open("./emails/" + filename, "w") as f:
                         f.write(text_data.decode("utf-8"))
+            ''' #If you want to have html files be their own file
             elif mimeType == "text/html":
                 # if the email part is an HTML content
                 # save the HTML file and optionally open it in the browser
@@ -158,6 +158,7 @@ def parse_parts(service, parts, message, msg, info):
                 elif os.path.exists("./emails/" + filename) == False:
                     with open("./emails/" + filename, "w") as f:
                         f.write(soup.prettify())
+            '''
     # This helps fix the bad choices WMATA made.
     # For some reason, the smaller update emails have no 'parts', so going through a 'if parts:' was giving me everything else.
     # As you can see, it checks to see if there are parts and then will grab my Jerry-rigged array strings and give you a nice .txt file.
@@ -165,16 +166,27 @@ def parse_parts(service, parts, message, msg, info):
         filename = message['id'] + ".txt"
         data = msg["snippet"]
         #print(data)
-        if os.path.exists("./emails/" + filename) == True:
+        if os.path.exists("./emails/alerts-" + filename) == True:
             pass
-        elif os.path.exists("./emails/" + filename) == False:
-            with open("./emails/" + filename, "w") as f:
+        elif os.path.exists("./emails/alerts-" + filename) == False:
+            with open("./emails/alerts-" + filename, "w") as f:
                 f.write(info + " " + data)
 
+def DeleteMessages(service, query):
+    messages_to_delete = SearchMessages(service, query)
+    # it's possible to delete a single message with the delete API, like this:
+    # service.users().messages().delete(userId='me', id=msg['id'])
+    # but it's also possible to delete all the selected messages with one query, batchDelete
+    return service.users().messages().batchDelete(
+      userId='me',
+      body={
+          'ids': [ msg['id'] for msg in messages_to_delete]
+      }
+    ).execute()
 
 # get emails that match the query you specify from the command lines
-results = search_messages(service, "MetroAlerts")
+results = SearchMessages(service, "MetroAlerts")
 print(f"Found {len(results)} results.")
 # for each email matched, read it (output plain/text to console & save HTML and attachments)
 for msg in results:
-    read_message(service, msg)
+    ReadMessage(service, msg)

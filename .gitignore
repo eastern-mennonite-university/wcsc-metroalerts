@@ -3,6 +3,9 @@
 
 #The email just in case
 email.json
+emails/*
+#Ignoring django for now, just in case
+metroalerts
 
 #VSCode Workspace files
 *.code-workspace

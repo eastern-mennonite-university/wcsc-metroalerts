@@ -7,8 +7,12 @@ Dependencies and software:
 
 - I am using Python 3.10.6 to make this project.
 
+- Django 4.1.7
+
 - The only dependencies are Google's PIP packages, which is in a helpful command in the quickstart. The rest of the libraries are built in. 
 
 - In order to get your API project setup, look at ThePythonCode's guide.
 ### Note:
-You will need to make a full fledged API project with Google in order to use OAuth, if you haven't already made a project.
+You will need to make a full fledged API project with Google in order to use OAuth, if you haven't already made a project. TPC's guide doesn't make that clear.
+
+Right now, I have Django included in the gitignore just in case I put something sensitive in it on accident. To set it up yourself, open the root of this project in a terminal and run ```django startproject {insert name}```
