@@ -1,18 +1,17 @@
 # wcsc-metroalerts
-A overlay for the WMATA Rail map that shows where there are incidents and maintenance happening.
+## NOTICE: PORT FORWARD AT YOUR OWN RISK!
+This project was never intended to be deployed on an open port. Because of that there are possible issues, like ```DEBUG == True``` in Django settings. You have been warned.
 
-To get started, go look at [Google's Python Quickstart Guide](https://developers.google.com/gmail/api/quickstart/python "Google Gmail API Quickstart") and [ThePythonCode's amazing guide](https://www.thepythoncode.com/article/use-gmail-api-in-python "PythonCode's Gmail API Guide") on doing all of the basics with the API.
+### About:
+A live WMATA Metro map that shows where incidents are located, where maintenance is happening, and if there are any service advisories.
 
-Dependencies and software: 
+### Software notes: 
 
-- I am using Python 3.10.6 to make this project.
+- 3.11.2
 
-- Django 4.1.7
+- Django 5.0.1
+  - Right now, I am using mariaDB instead of the SQLite3 database. Might've been me being an idiot, but model tables weren't showing in DBeaver when doing ```python3 manage.py makemigrations``` and ```python3 manage.py migrate``` with SQLite. You'll need to setup a mariaDB database and will need to install the mariadb and mysqlclient Python libraries (Django was picky, and mysqlclient wasn't showing up on Pylance, sorry that there's two). 
 
-- The only dependencies are Google's PIP packages, which is in a helpful command in the quickstart. The rest of the libraries are built in. 
-
-- In order to get your API project setup, look at ThePythonCode's guide.
-### Note:
-You will need to make a full fledged API project with Google in order to use OAuth, if you haven't already made a project. TPC's guide doesn't make that clear.
-
-Right now, I have Django included in the gitignore just in case I put something sensitive in it on accident. To set it up yourself, open the root of this project in a terminal and run ```django startproject {insert name}```
+- When using Gmail, you need to have a Google API project and Google Python libraries. In order to get your API project setup, look at [ThePythonCode's guide](https://www.thepythoncode.com/article/use-gmail-api-in-python "PythonCode's Gmail API Guide").
+  - Google has a quick start guid to using their API things with Google. Might be helpful if you are new to this. [Google's Guide](https://developers.google.com/gmail/api/quickstart/python "Google Gmail API Quickstart")
+  - I personally reccomend imap at this time, it's just simpler to use. If you have a Microsoft account, you can use your @Outlook.com email. You have one even if you have never used or purchased Office.
