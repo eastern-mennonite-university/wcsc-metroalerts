@@ -1,4 +1,5 @@
 #API auth/key files
+./Secrets
 *.pickle
 
 #The email just in case

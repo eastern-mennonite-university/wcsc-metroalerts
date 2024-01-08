@@ -1,8 +1,12 @@
+#Needs to be reworked
+#For instance, ACTUALY CLOSE THE FILE FOR EVERY LOOP!
+'''
 import os
 import re
-import mariadb
+#import mariadb
 import sys
 import fnmatch
+import json
 
 def StartSQL():
     global cur
@@ -19,17 +23,63 @@ def StartSQL():
     conn.autocommit = False
     cur = conn.cursor()
 
-
-def FileParser():
+def AlFileParser():
     global alparts
-    global adparts
 
     alparts = {}
-    adparts = {}
+
     #Lists for alerts
-    alsub = []
-    aldat = []
-    albod = []
+    alsu = []
+    alda = []
+    albo = []
+
+    # create a dictionary to store the filenames and their file types
+    alfiles = []
+
+    # specify the folder containing the files
+    with open("./API_keys/filepath.json") as af:
+        email=json.loads(af.read())
+    al = email["alerts"]
+    # loop through all the files in the folder
+    for file_name in os.listdir(al):
+        alfiles.append(file_name)
+
+    # Open the file for reading
+    for i in alfiles:
+        for file_name in os.listdir(al):
+            with open(al+file_name, 'r') as f:
+                # Read the contents of the file into a string variable
+                file_contents = f.read()
+            #Get the certain string from the txt file
+            sub = re.search('Subject: (.+?)Date: ',file_contents)
+            date = re.search("Date: (.+?)"+str(r'-0700'), file_contents)
+            body = re.search(str(r'-0700')+" (.+?)OptOut: ", file_contents)
+            if sub:
+                sub = sub.group(1)
+                alsu.append(sub)
+                
+            if date:
+                date = date.group(1)
+                alda.append(date)
+
+            if body:
+                body = body.group(1)
+                albo.append(body)
+         
+    #Alert Dictionary
+    #Convert list to tuple
+    tasu = tuple(alsu)
+    tada = tuple(alda)
+    tabo = tuple(albo)
+    #Add tuples to dictionary
+    alparts["Subject:"] = tasu
+    alparts["Date:"] = tada
+    alparts["Body:"] = tabo
+
+def AdFileParser():
+    global adparts
+
+    adparts = {}
 
     #Lists for advisories
     adda = []
@@ -45,40 +95,21 @@ def FileParser():
     adet = []
 
     # create a dictionary to store the filenames and their file types
-    files = []
+    adfiles = []
 
     # specify the folder containing the files
-    folder_path = './emails/'
+    with open("./API_keys/filepath.json") as af:
+        email=json.loads(af.read())
+    ad = email["advisories"]
 
     # loop through all the files in the folder
-    for file_name in os.listdir(folder_path):
-        files.append(file_name)
+    for file_name in os.listdir(ad):
+        adfiles.append(file_name)
 
     # Open the file for reading
-    for i in files:
-        for file_name in os.listdir("./emails/"):
-            if fnmatch.fnmatch(file_name, "alerts-*.txt"):
-                with open("./emails/"+file_name, 'r') as f:
-                    # Read the contents of the file into a string variable
-                    file_contents = f.read()
-                #Get the certain string from the txt file
-                sub = re.search('Subject: (.+?)Date: ',file_contents)
-                date = re.search("Date: (.+?)"+str(r'-0700'), file_contents)
-                body = re.search(str(r'-0700')+" (.+?)OptOut: ", file_contents)
-                if sub:
-                    sub = sub.group(1)
-                    alsub.append(sub)
-                    
-                if date:
-                    date = date.group(1)
-                    aldat.append(date)
-
-                if body:
-                    body = body.group(1)
-                    albod.append(body)
-
-            else:
-                with open("./emails/"+file_name, 'r') as f:
+    for i in adfiles:
+        for file_name in os.listdir(ad):
+                with open(ad+file_name, 'r') as f:
                     file_contents = f.read()
                 da = re.search('(.+?)' + str(r'\nHours:'),file_contents)
                 ho = re.search(str(r'\nHours:') + '(.+?)' + str(r'\nService:'),file_contents)
@@ -136,17 +167,8 @@ def FileParser():
                     et = et.group(1)
                     adet.append(et)
 
-    #Alert Dictionary
-    #Convert list to tuple
-    tasu = tuple(alsub)
-    tada = tuple(aldat)
-    tabo = tuple(albod)
-    #Add tuples to dictionary
-    alparts["Subject:"] = tasu
-    alparts["Date:"] = tada
-    alparts["Body:"] = tabo
-
     #Advisory Dictionary
+    #Convert list to tuple
     tadda = tuple(adda)
     print(tadda)
     tadho = tuple(adho)
@@ -159,6 +181,7 @@ def FileParser():
     tadyl = tuple(adyl)
     tadgl = tuple(adgl)
     tadet = tuple(adet)
+    #Add tuples to dictionary
     adparts["Date:"] = tadda
     adparts["Hours:"] = tadho
     adparts["Service:"] = tadse
@@ -172,5 +195,6 @@ def FileParser():
     adparts["Etcetera:"] = tadet
 
 if __name__ == "__main__":
-    StartSQL()
-    FileParser()
+    #StartSQL()
+    AlFileParser()
+'''

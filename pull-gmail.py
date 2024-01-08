@@ -51,7 +51,7 @@ if not creds or not creds.valid:
             "./API_keys/credentials.json", SCOPES)
         creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open("./API_keys/token.json", "w") as token:
+    with open("./Secrets/token.json", "w") as token:
         token.write(creds.to_json())
 service = build("gmail", "v1", credentials=creds)
 
