@@ -55,10 +55,14 @@ def ImapAlertParser():
                 setup = "INSERT INTO main_alerts"
                 cursor.execute(setup)
                 add = "VALUES ("+message+", "+alsub+", "+aldat+", "+albod+")"
+                cursor.execute(add)
 
 
 def ImapAdvisoryParser():
-        print("Hi")
+        for message in mailbox.Maildir(adpath):
+               adsub = message['subject']
+               addat = message['date']
+               
 
 def Clean():
         for message in mailbox.Maildir(alpath):
@@ -76,5 +80,4 @@ def Clean():
                         except Exception as error:
                                 print("Error: "+ error)
                                 connection.rollback()
-                        i = i - 1
 ImapAlertParser()
