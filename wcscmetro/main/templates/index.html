@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+    <html>
+        {% load static %}
+        <head>
+            <title>WCSC Metro Alerts</title>
+            <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+            {% block head%}
+            {% endblock %}
+        </head>
+        <body>
+            <script src="{% static 'bootstrap/bootstrap.bundle.js' %}"></script>
+            <div class="container">
+                <div class="row">
+                    <div class="col-7">
+                        <img src="{% static 'assets/system-map.jpg'%}" alt="Metro map" align="left" width="1045" height="885">
+                    </div>
+                </div>
+            </div>
+            {% block body %}
+            {% endblock %}
