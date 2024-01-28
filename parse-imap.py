@@ -2,6 +2,7 @@ import os
 import json
 import mariadb
 import mailbox
+import imaplib
 import email
 from datetime import datetime, timedelta
 
@@ -23,9 +24,11 @@ db_config = {
 }
 
 #Global time value
-curdate = datetime.now()
+curdate = datetime.now().date()
 
-def get_body(message: email.message.Message, encoding: str = "utf-8") -> str:
+
+#Code to get the contents of an email from the file. https://stackoverflow.com/questions/74084430/extract-body-from-email-message-objects-in-python
+def GetBody(message: email.message.Message, encoding: str = "utf-8") -> str:
     body_in_bytes = ""
     if message.is_multipart():
         for part in message.walk():
@@ -44,40 +47,102 @@ def get_body(message: email.message.Message, encoding: str = "utf-8") -> str:
 
     return body
 
+#The filename of the email appears in a slightly different format in
+# both Alerts and Advisories. This code makes it into the filename.
+def NameFormatter(name):
+        if type(name) == str:
+                name = name.replace("<", "").replace(">","")+".eml"
+                print(name)
+                return name
+        else:
+                name = str(name)
+                name = name.replace("<", "").replace(">","")+".eml"
+                return name
+
+#Pulls relavent alerts data from the imap file.
 def ImapAlertParser():
-        #Open mailbox folder for alerts
+        #Setup SQL things
+        connection = mariadb.connect(**db_config)
+        cursor = connection.cursor()
+        #Open alert mailbox folder
+
         for message in mailbox.Maildir(alpath):
+                name = str(message.get("Message-Id"))
+                alna = NameFormatter(name)
                 alsub = message['subject']
                 aldat = message['date']
-                albod = get_body(message)
-                connection = mariadb.connect(**db_config)
-                cursor = connection.cursor()
-                setup = "INSERT INTO main_alerts"
-                cursor.execute(setup)
-                add = "VALUES ("+message+", "+alsub+", "+aldat+", "+albod+")"
-                cursor.execute(add)
+                albod = GetBody(message)
+                add = """INSERT INTO main_alerts (subject, date, content, name) VALUES (%s, %s, %s, %s)"""
+                cursor.execute(add, (str(alsub), str(aldat), str(albod), str(alna)))
+                connection.commit()
+        
+        cursor.close()
+        connection.close()
 
-
+#Pulls relavent advisory data from the imap file
 def ImapAdvisoryParser():
+        #Open advisory mailbox folder
         for message in mailbox.Maildir(adpath):
                adsub = message['subject']
                addat = message['date']
-               
-
+'''        
+If the emails are left unchecked, the SQL database will quickly become super huge for what this project is. 
+        (In about half a year I have just about 3000 emails of alerts, for example)
+This function will delete SQL entries, and Imap file, after a certain period. Alerts will be 3 days and Advisories will hopefully be deleted 5 days after their stated
+        end, though we'll see.
+The length until deletion can be changed by you.
+'''
 def Clean():
+        connection = mariadb.connect(**db_config)
+        cursor = connection.cursor()
         for message in mailbox.Maildir(alpath):
+                name = str(message.get("Message-Id"))
+                alna = NameFormatter(name)
                 aldat = message['date']
-
-                timediff = curdate - aldat
+                sdate = aldat.split(' ')
+                if isinstance(sdate[2], str):
+                        if sdate[2] == "Jan":
+                                sdate[2] = "01"
+                        elif sdate[2] == "Feb":
+                                sdate[2] = "02"
+                        elif sdate[2] == "Mar":
+                                sdate[2] = "03"
+                        elif sdate[2] == "Apr":
+                                sdate[2] = "04"
+                        elif sdate[2] == "May":
+                                sdate[2] = "05"
+                        elif sdate[2] == "Jun":
+                                sdate[2] = "06"
+                        elif sdate[2] == "Jul":
+                                sdate[2] = "07"
+                        elif sdate[2] == "Aug":
+                                sdate[2] = "08"
+                        elif sdate[2] == "Sep":
+                                sdate[2] = "09"
+                        elif sdate[2] == "Oct":
+                                sdate[2] = "10"
+                        elif sdate[2] == "Nov":
+                                sdate[2] = "11"
+                        elif sdate[2] == "Dec":
+                                sdate[2] = "12"
+                ndate = ""+sdate[3]+"-"+sdate[2]+"-"+sdate[1]+""
+                date = datetime.strptime(ndate, '%Y-%m-%d').date()
+                timediff = curdate - date
                 if(timediff > timedelta(7)):
-                        message.set_flags('D')
                         try:
-                                connection = mariadb.connect(**db_config)
-                                cursor = connection.cursor()
-                                query = "DELETE FROM main_alerts WHERE id='"+message+"';"
-                                cursor.execute(query)
+                                delete = "DELETE FROM main_alerts WHERE name=?"
+                                print(delete, (str(alna)))
+                                cursor.execute(delete, (str(alna),))
                                 connection.commit()
+                                #This will tell Thunderbird, or any other Imap client, that the
+                                # message should be deleted.
+                                #message.set_flags('D')
                         except Exception as error:
-                                print("Error: "+ error)
+                                print(error)
                                 connection.rollback()
-ImapAlertParser()
+                                return
+        cursor.close
+        connection.close
+
+#ImapAlertParser()
+Clean()

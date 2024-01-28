@@ -2,13 +2,13 @@ from django.db import models
 
 # Create your models here.
 class Alerts(models.Model):
-    name = models.CharField(max_length=255, null=True)
-    subject = models.CharField(max_length=255)
-    date = models.DateField(null = True)
-    content = models.CharField(max_length=255)
+    name = models.TextField(null=True)
+    subject = models.CharField(max_length=255, null=True)
+    date = models.CharField(max_length=255, null = True)
+    content = models.TextField(null=True)
 
 class Advisories(models.Model):
-    name = models.CharField(max_length=255, null=True)
-    subject = models.CharField(max_length=255)
-    date = models.DateField(null = True)
-    content = models.CharField(max_length=255)
+    name = models.TextField(null=True)
+    subject = models.CharField(max_length=255, null = True)
+    date = models.CharField(max_length=255, null = True)
+    content = models.TextField(null = True)
