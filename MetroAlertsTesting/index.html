@@ -24,61 +24,126 @@
             <div class="col-4">
                 <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active" data-bs-interval="2000000">
+                        <div class="carousel-item" id="Alerts" data-bs-interval="2000">
                             <div class="d-block w-100">
                                 <h1>Metro Alerts</h1>
-                                <!-- Auto Collapsing Bootstrap Flex boxes for different metro lines-->
-                                <div class="col-12 bg-danger redal">
-                                    <div class="card choice bg-danger text-white mx-2">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <img src="/assets/redline.png" alt="Red Line Alerts"/>
-                                                Red Line
-                                            </h5>
+                                <!-- Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be cahnged for
+                                     convience. -->
+                                <div class="accordion">
+                                    <!-- Red Line Alerts-->
+                                    <div class="accordion-item" id="RedLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-danger bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedAl" aria-expanded="true" aria-controls="collapseOne">
+                                                <img src="/assets/redline.png" alt="Red Line Alerts" /> &nbsp; Red Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseRedAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-danger text-white">
+                                                <ul>
+                                                    <!--Need some kinda logic for how many alerts are going-->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Green Line Alerts-->
+                                    <div class="accordion-item" id="GreenLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-success bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGreenAl" aria-expanded="false" aria-controls="collapseTwo">
+                                                <img src="/assets/greenline.png" alt="Green Line Alerts" /> &nbsp; Green Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseGreenAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-success text-white">
+                                                <ul>
+                                                    <!-- Needs logic -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  Yellow Line Alerts-->
+                                    <div class="accordion-item" id="YellowLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-warning bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYellowAl" aria-expanded="false" aria-controls="collapseThree">
+                                                <img src="/assets/yellowline.png" alt="Yellow Line Alerts" /> &nbsp; Yellow Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseYellowAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-warning">
+                                                <!-- Needs logic -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  Blue Line Alerts-->
+                                    <div class="accordion-item" id="BlueLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-primary bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlueAl" aria-expanded="false" aria-controls="collapseThree">
+                                                <img src="/assets/blueline.png" alt="Blue Line Alerts" /> &nbsp; Blue Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBlueAl" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-primary">
+                                                <!-- Needs logic -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  Orange Line Alerts-->
+                                    <div class="accordion-item" id="OrangeLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-orange bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrangeAl" aria-expanded="false" aria-controls="collapseThree">
+                                                <img src="/assets/orangeline.png" alt="Orange Line Alerts" /> &nbsp; Orange Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOrangeAl" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-orange">
+                                                <!-- Needs logic -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  Silver Line Alerts-->
+                                    <div class="accordion-item" id="SilverLineAlerts">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-secondary bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSilverAl" aria-expanded="false" aria-controls="collapseThree">
+                                                <img src="/assets/silverline.png" alt="Silver Line Alerts" /> &nbsp; Silver Line
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSilverAl" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body bg-secondary text-white">
+                                                <!-- Needs logic -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col12 bg-danger card-animation">
-                                    <ul>
-                                        <h1>Hi hfilesjfiles</h1>
-                                        <h1>fhjaeikoufhe4o</h1>
-                                        <h1>fhjaeikoufhe4o</h1>
-                                    </ul>
+                            </div>
+                        </div>
+                        <div class="carousel-item active" id="Advisories" data-bs-interval="2000">
+                            <div class="d-block w-100">
+                                <div>
+                                    <h1>Metro Service Anouncements</h1>
+                                    
                                 </div>
                             </div>
-                        </div>
-                        <div class="carousel-item" data-bs-interval="2000">
-                            <div class="d-block w-100">
-                                Second Page
-                            </div>
-                        </div>
+                        </div>        
                         <!-- KEEP FOR POSSIBLE BUS PAGE
                         <div class="carousel-item" data-bs-interval="2000">
                             <div class="d-block w-100">
                                 Third Page
                             </div>
-                        </div>
-                        -->
+                        </div> -->
+                                
+                            
                     </div>
-                    <!--
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                        -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- Bootstrap core JavaScript
+        <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="assets/js/popper.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>
