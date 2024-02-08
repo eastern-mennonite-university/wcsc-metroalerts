@@ -1,6 +1,7 @@
 #API auth/key files
 ./Secrets
 *.pickle
+*.json
 
 #The email just in case
 email.json

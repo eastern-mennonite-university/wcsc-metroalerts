@@ -4,14 +4,15 @@
     <head>
         <title>WCSC Metro Alerts</title>
         <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
         <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="Jacob Hess" content="" />
         <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
         <!-- Custom styles for this template --> 
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <!-- jQuery link -->
+        <script src="{% static 'js/jquery.min.js' %}"></script>
         {% block head %}
 
         {% endblock %}
@@ -24,18 +25,24 @@
                     <img class="img-fluid" src="{% static '/assets/system-map.jpg' %}" alt="MetroMap" />
                 </div>
                 <div class="col-4">
+                    <script>
+                        carouselDetect();
+                    </script>
                     <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active" id="Alerts" data-bs-interval="2000">
                                 <div class="d-block w-100">
-                                    <h1>Metro Alerts</h1>
+                                    <script>
+                                        window.addEventListener('carousel-item', carouselDetect);
+                                    </script>
+                                    <h1 id="detect">Metro Alerts</h1>
                                         <!--  Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be cahnged for
                                         convience.  -->
                                     <div class="accordion">
                                         <!-- Red Line Alerts -->
                                         <div class="accordion-item" id="RedLineAlerts">
                                             <h2 class="accordion-header">
-                                                <button class="accordion-button bg-danger bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedAl" aria-expanded="true" aria-controls="collapseOne">
+                                                <button class="accordion-button RedAlCol bg-danger bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedAl" aria-expanded="true" aria-controls="collapseOne">
                                                     <img src="{% static '/assets/redline.png' %}" alt="Red Line Alerts" /> &nbsp; Red Line
                                                 </button>
                                             </h2>
@@ -147,7 +154,7 @@
         ==================================================  -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'bootstrap/bootstrap.bundle.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         {% block body %}
 
         {% endblock %}
