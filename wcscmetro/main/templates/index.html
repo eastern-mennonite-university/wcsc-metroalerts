@@ -11,30 +11,21 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
         <!-- Custom styles for this template --> 
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-        <!-- jQuery link -->
-        <script src="{% static 'js/jquery.min.js' %}"></script>
         {% block head %}
 
         {% endblock %}
     </head>
     <body>
-        <script src="{% static 'js/custom.js' %}"></script>
         <div class="container-fluid">
             <div class="row align-items-start">
                 <div class="col-8">
                     <img class="img-fluid" src="{% static '/assets/system-map.jpg' %}" alt="MetroMap" />
                 </div>
                 <div class="col-4">
-                    <script>
-                        carouselDetect();
-                    </script>
-                    <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+                    <div id="carousel" class="carousel slide" wrap=true>
                         <div class="carousel-inner">
-                            <div class="carousel-item active" id="Alerts" data-bs-interval="2000">
+                            <div class="carousel-item active" id="Alerts">
                                 <div class="d-block w-100">
-                                    <script>
-                                        window.addEventListener('carousel-item', carouselDetect);
-                                    </script>
                                     <h1 id="detect">Metro Alerts</h1>
                                         <!--  Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be cahnged for
                                         convience.  -->
@@ -132,7 +123,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="carousel-item" id="Advisories" data-bs-interval="2000">
+                            <div class="carousel-item" id="Advisories">
                                 <div class="d-block w-100">
                                     <div>
                                         <h1>Metro Service Anouncements</h1>
@@ -152,9 +143,26 @@
         </div>
         <!--  Bootstrap core JavaScript
         ==================================================  -->
+        <!-- jQuery -->
+        <script src="{% static "js/jquery.min.js" %}"></script>
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+        <script>
+            function AccordionManager(event) {
+                var current = event.relatedTarget.id
+                if(current == 'Advisories') {
+                    console.log("Hi.");
+                } else { //Advisories
+                    console.log("Bye.");
+                }
+                //carousel.next()
+            }
+            const carousel = new bootstrap.Carousel('#carousel');
+            $('#carousel').on('slid.bs.carousel', AccordionManager);
+
+            AccordionManager({relatedTarget:$('#Alerts')});
+              
+        </script>
         {% block body %}
 
         {% endblock %}
