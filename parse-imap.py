@@ -134,7 +134,7 @@ def Clean():
                                 print(delete, (str(alna)))
                                 cursor.execute(delete, (str(alna),))
                                 connection.commit()
-                                #This will tell Thunderbird, or any other Imap client, that the
+                                #This will tell Thunderbird, or any other Imap client, that this
                                 # message should be deleted.
                                 #message.set_flags('D')
                         except Exception as error:
