@@ -27,7 +27,7 @@
                             <div class="carousel-item active" id="Alerts">
                                 <div class="d-block w-100">
                                     <h1 id="detect">Metro Alerts</h1>
-                                        <!--  Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be cahnged for
+                                        <!--  Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be changed for
                                         convience.  -->
                                     <div class="accordion">
                                         <!-- Red Line Alerts -->
@@ -37,7 +37,7 @@
                                                     <img src="{% static '/assets/redline.png' %}" alt="Red Line Alerts" /> &nbsp; Red Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseRedAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseRedAl" class="accordion-collapse collapse" data-bs-parent="#RedAlerts">
                                                 <div class="accordion-body bg-danger text-white">
                                                     <ul>
                                                         <!-- Need some kinda logic for how many alerts are going -->
@@ -52,7 +52,7 @@
                                                     <img src="{% static '/assets/greenline.png' %}" alt="Green Line Alerts" /> &nbsp; Green Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseGreenAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseGreenAl" class="accordion-collapse collapse" data-bs-parent="#GreenAlerts">
                                                 <div class="accordion-body bg-success text-white">
                                                     <ul>
                                                         <!-- Needs logic -->
@@ -67,7 +67,7 @@
                                                     <img src="{% static '/assets/yellowline.png' %}" alt="Yellow Line Alerts" /> &nbsp; Yellow Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseYellowAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseYellowAl" class="accordion-collapse collapse" data-bs-parent="#YellowAlerts">
                                                 <div class="accordion-body bg-warning">
                                                     <ul>
                                                         <!-- Needs logic -->
@@ -82,7 +82,7 @@
                                                     <img src="{% static '/assets/blueline.png' %}" alt="Blue Line Alerts" /> &nbsp; Blue Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseBlueAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseBlueAl" class="accordion-collapse collapse" data-bs-parent="#BlueAlerts">
                                                 <div class="accordion-body bg-primary">
                                                     <ul>
                                                         <!-- Needs logic -->
@@ -97,7 +97,7 @@
                                                     <img src="{% static '/assets/orangeline.png' %}" alt="Orange Line Alerts" /> &nbsp; Orange Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseOrangeAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseOrangeAl" class="accordion-collapse collapse" data-bs-parent="#OrangeAlerts">
                                                 <div class="accordion-body bg-orange">
                                                     <ul>
                                                         <!-- Needs logic -->
@@ -112,7 +112,7 @@
                                                     <img src="{% static '/assets/silverline.png' %}" alt="Silver Line Alerts" /> &nbsp; Silver Line
                                                 </button>
                                             </h2>
-                                            <div id="collapseSilverAl" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div id="collapseSilverAl" class="accordion-collapse collapse" data-bs-parent="#SilverAlerts">
                                                 <div class="accordion-body bg-secondary text-white">
                                                     <ul>
                                                         <!-- Needs logic -->
@@ -148,14 +148,21 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
         <script>
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
             function AccordionManager(event) {
                 var current = event.relatedTarget.id
                 if(current == 'Advisories') {
                     console.log("Hi.");
-                } else { //Advisories
+                } else { //Alerts
                     console.log("Bye.");
+
                 }
-                //carousel.next()
+                //carousel.next();
+                
             }
             const carousel = new bootstrap.Carousel('#carousel');
             $('#carousel').on('slid.bs.carousel', AccordionManager);

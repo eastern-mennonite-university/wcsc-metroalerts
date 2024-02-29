@@ -1,7 +1,7 @@
-#API auth/key files
+#API auth/key files/Filepath
 ./Secrets
 *.pickle
-*.json
+filepath.json
 
 #The email just in case
 email.json
