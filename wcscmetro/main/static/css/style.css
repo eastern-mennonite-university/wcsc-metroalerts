@@ -21,3 +21,17 @@
 .bg-orange {
     background-color: #f7941eff !important;
   }
+
+.AlertsTitle {
+    width: 280px;
+    padding: 5px 0px;
+    margin: 0 auto;
+    background-color: #000;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+}
+
+.container-fluid {
+    border-left: unset;
+}
