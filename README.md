@@ -7,7 +7,7 @@ A live WMATA Metro map that shows where incidents are located, where maintenance
 
 ### Software notes: 
 
-- 3.11.2
+- Python 3.11.2
 
 - Django 5.0.1
   - Right now, I am using mariaDB instead of the SQLite3 database. Might've been me being an idiot, but model tables weren't showing in DBeaver when doing ```python3 manage.py makemigrations``` and ```python3 manage.py migrate``` with SQLite. You'll need to setup a mariaDB database and will need to install the mariadb and mysqlclient Python libraries (Django was picky, and mysqlclient wasn't showing up on Pylance, sorry that there's two). 
