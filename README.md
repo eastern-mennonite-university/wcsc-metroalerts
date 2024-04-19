@@ -3,7 +3,7 @@
 This project was never intended to be deployed on an open port. Because of that there are possible issues, like ```DEBUG == True``` in Django settings. You have been warned.
 
 ### About:
-A live WMATA Metro map that shows where incidents are located, where maintenance is happening, and if there are any service advisories. It uses the email that MetroAlerts sends notifications to. Make sure to use a dedicated email account, or set rules that send WMATA messages to folders called 'alerts' and 'advisories'. The code could pull down random stuff you don't want stored locally. The email protocols this project supports is Gmail and Maildir Imap. Mbox is not in my scope. The Imap implementation has no way of pulling down emails on it's own, you'll need an email client that supports Maildir. I have personally been using Thunderbird.
+A live WMATA Metro map that shows where incidents are located, where maintenance is happening, and if there are any service advisories. It uses the email that MetroAlerts sends notifications to. Make sure to use a dedicated email account and set rules that send WMATA messages to two folders called 'alerts' and 'advisories'. If you don't the code could pull down random stuff you don't want and then store it locally. The email protocols this project supports are ```Gmail``` and ```Maildir IMAP```. ```Mbox``` is not in my scope. The ```IMAP``` implementation in this project has no way of pulling down emails on it's own. You'll need an email client that supports ```Maildir```. I have personally been using Thunderbird.
 
 ### Software notes: 
 
