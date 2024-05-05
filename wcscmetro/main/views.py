@@ -5,11 +5,17 @@ from .models import Alerts, Advisories
 
 # Create your views here.
 def main(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    return render(request, 'index.html', {
+        "alerts_list": Alerts.objects.all(),
+        "advisories_list": Advisories.objects.all()
+    })
+'''
+def check_database_updates(request):
+    #Retrieve data from the database
+    new_items = Alerts.objects.filter(is_processed=False)
 
-def alerts(request):
-    walerts = Alerts.objects.all().values()
-
-def advisories(request):
-    wadvisories = Advisories.objects.all().values()
+    #Process new items if needed
+    for item in new_items:
+        item.is_processed = True
+        item.save()
+'''

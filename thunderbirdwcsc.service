@@ -1,0 +1,13 @@
+[Unit]
+Description=Pull Down IMAP Service
+After=network.target
+
+[Service]
+Type=simple
+User=jacob
+ExecStart=/usr/bin/thunderbird
+Restart=always
+StartLimitIntervalSec=60
+
+[Install]
+WantedBy=multi-user.target

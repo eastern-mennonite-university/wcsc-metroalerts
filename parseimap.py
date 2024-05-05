@@ -1,31 +1,30 @@
-import os
+import re
 import json
 import mariadb
 import mailbox
-import imaplib
 import email
 from datetime import datetime, timedelta
-
-#Get secrets
-with open("./Secrets/filepath.json") as j:
-        secrets=json.loads(j.read())
-user = secrets["dbusername"]
-passw = secrets["dbpassword"]
-alpath = secrets["imapalerts"]
-adpath = secrets["imapadvisories"]
-
-#Initialize Database access
-database = "wcscmetro"
-db_config = {
-      'host': 'localhost',
-      'user': str(user),
-      'password': str(passw),
-      'database': database
-}
+from time import sleep
 
 #Global time value
 curdate = datetime.now().date()
 
+#Get secrets
+with open("Secrets/filepath.json") as j:
+        secrets=json.loads(j.read())
+        user = secrets["dbusername"]
+        passw = secrets["dbpassword"]
+        alpath = secrets["imapalerts"]
+        adpath = secrets["imapadvisories"]
+
+        #Initialize Database access
+        database = "wcscmetro"
+        db_config = {
+              'host': 'localhost',
+              'user': str(user),
+              'password': str(passw),
+              'database': database
+        }
 
 #Code to get the contents of an email from the file. https://stackoverflow.com/questions/74084430/extract-body-from-email-message-objects-in-python
 def GetBody(message: email.message.Message, encoding: str = "utf-8") -> str:
@@ -66,14 +65,44 @@ def ImapAlertParser():
         cursor = connection.cursor()
         #Open alert mailbox folder
 
+        key = {
+               "Red": "Red",
+               "Green": "Green",
+               "Yellow": "Yellow",
+               "Blue": "Blue",
+               "Orange": "Orange",
+               "Silver": "Silver",
+        }
+
+        lines = {
+               "Orange/Silver/Blue": r"\bOrange/Silver/Blue\b",
+               "Orange/Silver": r"\bOrange/Silver\b",
+               "Silver/Blue": r"\bSilver/Blue\b",
+               "Blue/Yellow": r"\bBlue/Yellow\b",
+               "Yellow/Green": r"\bYellow/Green\b",
+               "Red": r"\bRed\b",
+               "Green": r"\bGreen\b",
+               "Yellow": r"\bYellow\b",
+               "Blue": r"\bBlue\b",
+               "Orange": r"\bOrange\b",
+               "Silver": r"\bSilver\b"
+        }
+
         for message in mailbox.Maildir(alpath):
                 name = str(message.get("Message-Id"))
+                alrail = None
                 alna = NameFormatter(name)
                 alsub = message['subject']
                 aldat = message['date']
                 albod = GetBody(message)
-                add = """INSERT INTO main_alerts (subject, date, content, name) VALUES (%s, %s, %s, %s)"""
-                cursor.execute(add, (str(alsub), str(aldat), str(albod), str(alna)))
+                albod = albod.replace('\n\nOptOut: http://w.v12.net/u?upvuvrs\n','')
+                for key, line in lines.items():
+                       if re.search(line, alsub):
+                              alrail = key
+                              break
+                        
+                add = """INSERT INTO main_alerts (rail, name, subject, date, content) VALUES (%s, %s, %s, %s, %s)"""
+                cursor.execute(add, (str(alrail), str(alna), str(alsub), str(aldat), str(albod)))
                 connection.commit()
         
         cursor.close()
@@ -130,8 +159,7 @@ def Clean():
                 timediff = curdate - date
                 if(timediff > timedelta(7)):
                         try:
-                                delete = "DELETE FROM main_alerts WHERE name=?"
-                                print(delete, (str(alna)))
+                                delete = "DELETE FROM main_alerts WHERE name=%s"
                                 cursor.execute(delete, (str(alna),))
                                 connection.commit()
                                 #This will tell Thunderbird, or any other Imap client, that this
@@ -144,5 +172,8 @@ def Clean():
         cursor.close
         connection.close
 
-#ImapAlertParser()
-Clean()
+
+ImapAlertParser()
+#ImapAdvisoryParser()
+#Clean()
+print("Done")

@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
         <meta name="description" content="" />
         <meta name="Jacob Hess" content="" />
+        <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" >
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
         <!-- Custom styles for this template --> 
@@ -19,7 +20,7 @@
         <div class="container-fluid">
             <div class="row align-items-start">
                 <div class="col-8">
-                    <img class="img-fluid" src="{% static '/assets/system-map.jpg' %}" alt="MetroMap" />
+                    <img class="img-fluid" src="{% static '/images/system-map.jpg' %}" alt="MetroMap" />
                 </div>
                 <div class="col-4">
                     <div id="carousel" class="carousel slide" wrap=true>
@@ -34,14 +35,17 @@
                                         <div class="accordion-item" id="RedLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button RedAlCol bg-danger bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedAl" aria-expanded="false" aria-controls="collapseRedAl">
-                                                    <img src="{% static '/assets/redline.png' %}" alt="Red Line Alerts" /> &nbsp; Red Line
+                                                    <img src="{% static '/images/redline.png' %}" alt="Red Line Alerts" /> &nbsp; Red Line
                                                 </button>
                                             </h2>
                                             <div id="collapseRedAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-danger text-white">
                                                     <ul>
-                                                        <!-- Need some kinda logic for how many alerts are going -->
-                                                        <li>Lorem ipsum ipsum lorem lore</li>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Red" %}
+                                                                <li>{{x.content}}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -50,14 +54,17 @@
                                         <div class="accordion-item" id="GreenLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button bg-success bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGreenAl" aria-expanded="false" aria-controls="collapseGreenAl">
-                                                    <img src="{% static '/assets/greenline.png' %}" alt="Green Line Alerts" /> &nbsp; Green Line
+                                                    <img src="{% static '/images/greenline.png' %}" alt="Green Line Alerts" /> &nbsp; Green Line
                                                 </button>
                                             </h2>
                                             <div id="collapseGreenAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-success text-white">
                                                     <ul>
-                                                        <!-- Needs logic -->
-                                                        Unga bunga
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Green" or x.rail == "Yellow/Green" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -66,14 +73,17 @@
                                         <div class="accordion-item" id="YellowLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button bg-warning bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYellowAl" aria-expanded="false" aria-controls="collapseYellowAl">
-                                                    <img src="{% static '/assets/yellowline.png' %}" alt="Yellow Line Alerts" /> &nbsp; Yellow Line
+                                                    <img src="{% static '/images/yellowline.png' %}" alt="Yellow Line Alerts" /> &nbsp; Yellow Line
                                                 </button>
                                             </h2>
                                             <div id="collapseYellowAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-warning">
                                                     <ul>
-                                                        <!-- Needs logic -->
-                                                        Extra tall quality boulde
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Yellow" or x.rail == "Yellow/Green" or x.rail == "Blue/Yellow" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -82,14 +92,17 @@
                                         <div class="accordion-item" id="BlueLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button bg-primary bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlueAl" aria-expanded="false" aria-controls="collapseBlueAl">
-                                                    <img src="{% static '/assets/blueline.png' %}" alt="Blue Line Alerts" /> &nbsp; Blue Line
+                                                    <img src="{% static '/images/blueline.png' %}" alt="Blue Line Alerts" /> &nbsp; Blue Line
                                                 </button>
                                             </h2>
                                             <div id="collapseBlueAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-primary">
                                                     <ul>
-                                                        <!-- Needs logic -->
-                                                        Ocean
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Blue" or x.rail == "Blue/Yellow" or x.rail == "Silver/Blue" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -98,13 +111,17 @@
                                         <div class="accordion-item" id="OrangeLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button bg-orange bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrangeAl" aria-expanded="false" aria-controls="collapseOrangeAl">
-                                                    <img src="{% static '/assets/orangeline.png' %}" alt="Orange Line Alerts" /> &nbsp; Orange Line
+                                                    <img src="{% static '/images/orangeline.png' %}" alt="Orange Line Alerts" /> &nbsp; Orange Line
                                                 </button>
                                             </h2>
                                             <div id="collapseOrangeAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-orange">
                                                     <ul>
-                                                        <!-- Needs logic -->
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Orange" or x.rail == "Orange/Silver" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -113,13 +130,17 @@
                                         <div class="accordion-item" id="SilverLineAl">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button bg-secondary bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSilverAl" aria-expanded="false" aria-controls="collapseSilverAl">
-                                                    <img src="{% static '/assets/silverline.png' %}" alt="Silver Line Alerts" /> &nbsp; Silver Line
+                                                    <img src="{% static '/images/silverline.png' %}" alt="Silver Line Alerts" /> &nbsp; Silver Line
                                                 </button>
                                             </h2>
                                             <div id="collapseSilverAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
                                                 <div class="accordion-body bg-secondary text-white">
                                                     <ul>
-                                                        <!-- Needs logic -->
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Silver" or x.rail == "Orange/Silver" or x.rail == "Silver/Blue" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -157,15 +178,19 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
             
+
             function AlertsTimer(elId) {
-                return 1250 + $(elId + " ul")[0].innerText.length * 50
+                //For timing when accordions fold
+                // 1000 is 1 second
+                return 750 + $(elId + " ul")[0].innerText.length * 50
             }
-                        //Need to make different vars for each sleep
+
             function AccordionManager(event) {
                 var current = event.relatedTarget.id
                 if(current == 'Advisories') {
                     //console.log("Hi.");
                     sleep(1000).then(() => { 
+                        
                         carousel.next();
                     });
                 } else { //Alerts
@@ -201,15 +226,15 @@
                             });
                         });
                     });
-                }
-                //carousel.next();
-                
+                }   
             }
+
+            //Detect when the carousel has stopped
             const carousel = new bootstrap.Carousel('#carousel');
             $('#carousel').on('slid.bs.carousel', AccordionManager);
-            
+            //Start the carousel on Alerts
             AccordionManager({relatedTarget:$('#Alerts')});
-              
+            
         </script>
         {% block body %}
 
