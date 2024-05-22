@@ -1,0 +1,13 @@
+[Unit]
+Description=Parseimap Service
+After=network.target
+
+[Service]
+Type=simple
+User=jacob
+ExecStart=/usr/bin/python3 /home/jacob/Documents/wcsc-metroalerts/parseimap.py
+Restart=always
+RuntimeMaxSec=2m
+
+[Install]
+WantedBy=multi-user.target

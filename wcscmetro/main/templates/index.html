@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+    <head>
+        <title>WCSC Metro Alerts</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+        <meta name="description" content="" />
+        <meta name="Jacob Hess" content="" />
+        <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" >
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <!-- Custom styles for this template --> 
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        {% block head %}
+
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row align-items-start">
+                <div class="col-8">
+                    <img class="img-fluid" src="{% static '/images/system-map.jpg' %}" alt="MetroMap" />
+                </div>
+                <div class="col-4">
+                    <div id="carousel" class="carousel slide" wrap=true>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" id="Alerts">
+                                <div class="d-block w-100">
+                                    <h1 class="AlertsTitle">Metro Alerts</h1>
+                                        <!--  Auto Collapsing Bootstrap Flex boxes for different metro lines. Order of lines can be changed for
+                                        convience.  -->
+                                    <div class="accordion" id="AlertsAccordion">
+                                        <!-- Red Line Alerts -->
+                                        <div class="accordion-item" id="RedLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button RedAlCol bg-danger bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedAl" aria-expanded="false" aria-controls="collapseRedAl">
+                                                    <img src="{% static '/images/redline.png' %}" alt="Red Line Alerts" /> &nbsp; Red Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseRedAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-danger text-white">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Red" %}
+                                                                <li>{{x.content}}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Green Line Alerts -->
+                                        <div class="accordion-item" id="GreenLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-success bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGreenAl" aria-expanded="false" aria-controls="collapseGreenAl">
+                                                    <img src="{% static '/images/greenline.png' %}" alt="Green Line Alerts" /> &nbsp; Green Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseGreenAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-success text-white">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Green" or x.rail == "Yellow/Green" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Yellow Line Alerts -->
+                                        <div class="accordion-item" id="YellowLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-warning bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYellowAl" aria-expanded="false" aria-controls="collapseYellowAl">
+                                                    <img src="{% static '/images/yellowline.png' %}" alt="Yellow Line Alerts" /> &nbsp; Yellow Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseYellowAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-warning">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Yellow" or x.rail == "Yellow/Green" or x.rail == "Blue/Yellow" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Blue Line Alerts -->
+                                        <div class="accordion-item" id="BlueLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-primary bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlueAl" aria-expanded="false" aria-controls="collapseBlueAl">
+                                                    <img src="{% static '/images/blueline.png' %}" alt="Blue Line Alerts" /> &nbsp; Blue Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseBlueAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-primary">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Blue" or x.rail == "Blue/Yellow" or x.rail == "Silver/Blue" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Orange Line Alerts -->
+                                        <div class="accordion-item" id="OrangeLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-orange bg-gradient collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrangeAl" aria-expanded="false" aria-controls="collapseOrangeAl">
+                                                    <img src="{% static '/images/orangeline.png' %}" alt="Orange Line Alerts" /> &nbsp; Orange Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOrangeAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-orange">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Orange" or x.rail == "Orange/Silver" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Silver Line Alerts -->
+                                        <div class="accordion-item" id="SilverLineAl">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-secondary bg-gradient text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSilverAl" aria-expanded="false" aria-controls="collapseSilverAl">
+                                                    <img src="{% static '/images/silverline.png' %}" alt="Silver Line Alerts" /> &nbsp; Silver Line
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSilverAl" class="accordion-collapse collapse" data-bs-parent="#AlertsAccordion">
+                                                <div class="accordion-body bg-secondary text-white">
+                                                    <ul>
+                                                        {% for x in alerts_list %}
+                                                            {% if x.rail == "Silver" or x.rail == "Orange/Silver" or x.rail == "Silver/Blue" or x.rail == "Orange/Silver/Blue" %}
+                                                                <li>{{ x.content }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item" id="Advisories">
+                                <div class="d-block w-100">
+                                    <div>
+                                        <h1>Metro Service Anouncements</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  KEEP FOR POSSIBLE BUS PAGE
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <div class="d-block w-100">
+                                    Third Page
+                                </div>
+                            </div>  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Bootstrap core JavaScript
+        ==================================================  -->
+        <!-- jQuery -->
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+        <script>
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+
+            function AlertsTimer(elId) {
+                //For timing when accordions fold
+                // 1000 is 1 second
+                return 750 + $(elId + " ul")[0].innerText.length * 50
+            }
+
+            function AccordionManager(event) {
+                var current = event.relatedTarget.id
+                if(current == 'Advisories') {
+                    //console.log("Hi.");
+                    sleep(1000).then(() => { 
+                        
+                        carousel.next();
+                    });
+                } else { //Alerts
+                    //console.log("Bye.");
+                    var bsCollapse = new bootstrap.Collapse('#collapseRedAl', { show: true })
+                    
+                    //Move sleep equations to var in AlertsTimer
+                    sleep(AlertsTimer("#collapseRedAl")).then(() => { 
+
+                        var bsCollapse = new bootstrap.Collapse('#collapseGreenAl', { show: true }); 
+                        sleep(AlertsTimer("#collapseGreenAl")).then(() => { 
+                            
+                            var bsCollapse = new bootstrap.Collapse('#collapseYellowAl', { show: true }); 
+                            sleep(AlertsTimer("#collapseYellowAl")).then(() => { 
+                                
+                                var bsCollapse = new bootstrap.Collapse('#collapseBlueAl', { show: true }); 
+                                sleep(AlertsTimer("#collapseBlueAl")).then(() => { 
+                                    
+                                    var bsCollapse = new bootstrap.Collapse('#collapseOrangeAl', { show: true });  
+                                    sleep(AlertsTimer("#collapseOrangeAl")).then(() => { 
+                                        
+                                        var bsCollapse = new bootstrap.Collapse('#collapseSilverAl', { show: true }); 
+                                        sleep(AlertsTimer("#collapseSilverAl")).then(() => { 
+                                            
+                                            var bsCollapse = new bootstrap.Collapse('#collapseSilverAl', { show: false }); 
+                                            sleep(1250).then(() => {
+                                                //Add alert refresh here. Possibly need it to  
+                                                carousel.next();
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }   
+            }
+
+            //Detect when the carousel has stopped
+            const carousel = new bootstrap.Carousel('#carousel');
+            $('#carousel').on('slid.bs.carousel', AccordionManager);
+            //Start the carousel on Alerts
+            AccordionManager({relatedTarget:$('#Alerts')});
+            
+        </script>
+        {% block body %}
+
+        {% endblock %}
+    </body>
+</html>

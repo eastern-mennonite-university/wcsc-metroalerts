@@ -1,8 +1,11 @@
-#API auth/key files
+#API auth/key files/Filepath
+./Secrets
 *.pickle
+filepath.json
 
 #The email just in case
 email.json
+emails/*
 
 #VSCode Workspace files
 *.code-workspace

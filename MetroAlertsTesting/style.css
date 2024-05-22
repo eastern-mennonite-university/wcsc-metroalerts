@@ -1,0 +1,23 @@
+.card-animation {
+    animation-duration: 3s;
+    animation-name: cardslide;
+}
+
+@keyframes cardslide {
+    from {
+        transform-origin: top;
+        transform: scaleY(0);
+        opacity: 0%;
+    }
+
+    to {
+        transform-origin: top;
+        transform: scaleY(1);
+        opacity: 100%;
+    }
+    
+}
+
+.bg-orange {
+    background-color: #f7941eff !important;
+  }
