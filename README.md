@@ -16,3 +16,8 @@ A live WMATA Metro map that shows where incidents are located, where maintenance
 
 - When using Gmail, you need to have a Google API project and Google Python libraries. In order to get your API project setup, look at [ThePythonCode's guide](https://www.thepythoncode.com/article/use-gmail-api-in-python "PythonCode's Gmail API Guide").
   - Google has a quick start guide to using their API things. [Google's API Guide](https://developers.google.com/gmail/api/quickstart/python "Google Gmail API Quickstart")
+
+### Storing links for future reference
+https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04
+https://mariadb.com/kb/en/mariadb-basics/
+https://mariadb.com/docs/server/connect/programming-languages/c/install/#Installation_via_Package_Repository_(Linux)
