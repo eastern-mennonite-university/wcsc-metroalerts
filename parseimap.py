@@ -1,3 +1,6 @@
+#
+# I THINK THIS FILE GET SUPERCEDED BY parse-sql ON ACCIDENT. USE parse-sql
+#
 import re
 import json
 import mariadb

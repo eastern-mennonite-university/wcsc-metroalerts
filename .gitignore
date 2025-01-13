@@ -3,6 +3,8 @@
 *.pickle
 filepath.json
 
+emailexample.html
+
 #The email just in case
 email.json
 emails/*
