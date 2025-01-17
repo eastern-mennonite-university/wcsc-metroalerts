@@ -6,6 +6,7 @@ import re
 import mariadb
 import sys
 import fnmatch
+import quopri
 
 class StartSQL():
     def __init__(self):
